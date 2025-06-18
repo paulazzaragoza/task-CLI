@@ -163,6 +163,24 @@ def mark_in_progress_task(id):
     else:
         print(f"The task with id \"{id}\" does not exist!")
 
+def mark_done_task(id):
+    if(not checked_dict["file"]): check_file()
+
+    my_tasks = get_tasks()
+    pos = get_coincidence(my_tasks, id)
+
+    if(pos != -1): 
+        my_tasks[pos]["status"] = "done"
+        my_tasks[pos]["updatedAt"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        with open (".tasks.json", "w") as json_tasks:
+            json.dump(my_tasks, json_tasks, indent=4)
+
+        print(f"The task with id \"{id}\" was succesfully marked done!")
+    else:
+        print(f"The task with id \"{id}\" does not exist!")
+
+
 
 if __name__ == "__main__":
     add_task("Buy groceries")
