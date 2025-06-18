@@ -8,11 +8,19 @@ id = None
 #dict for the different status for a task
 status_dict = {"todo": 1, "in-progress": 2, "done": 3}
 
+#dict that saves if the file or the id has been checked before
+checked_dict = {"file": False, "id": False}
+
+
+
+
 #checks if the json file exists, if not it is created
 def check_file():
     path = Path(".tasks.json")
     if not path.exists():
         path.touch()
+
+    checked_dict["file"] = True
 
 #returns the lists of tasks     
 def get_tasks():
@@ -25,6 +33,20 @@ def get_tasks():
 
     return tasks
 
+#returns the position of the id coincidence
+def get_coincidence(lst, id):
+    if(len(lst) == 0): return -1
+
+    pos = 0
+    for dct in lst:
+        for key in dct.keys():
+            if(key == "id" and dct["id"] == id):
+                return pos
+        
+        pos += 1
+
+    return -1
+
 #get the last id number
 def get_last_id():
     global id
@@ -35,13 +57,15 @@ def get_last_id():
     else:
         id = 1
 
-
+    checked_dict["id"] = True
 
 #checks if a task already exists
 def exists_task(lst, description_task):
-    for actual in lst:
-        for key in actual.keys():
-            if(key == "description" and actual["description"].lower() == description_task.lower()):
+    if(len(lst) == 0): return False
+
+    for dct in lst:
+        for key in dct.keys():
+            if(key == "description" and dct["description"].lower() == description_task.lower()):
                 return True
             
     return False
@@ -63,10 +87,10 @@ def create_task(description):
 
 #adds a task
 def add_task(description):
-    check_file()
-    get_last_id()
-    my_tasks = get_tasks()
+    if(not checked_dict["file"]): check_file()
+    if(not checked_dict["id"]): get_last_id()
 
+    my_tasks = get_tasks()
     if(not exists_task(my_tasks, description)):
         new_task = create_task(description)
         my_tasks.append(new_task)
@@ -78,7 +102,23 @@ def add_task(description):
     else:
         print(f"The task \"{description}\" already exists!")
 
+#update the description of a task by its id number
+def update_task(id, description):
+    if(not checked_dict["file"]): check_file()
 
+    my_tasks = get_tasks()
+    pos = get_coincidence(my_tasks, id)
+
+    if(pos != -1): 
+        my_tasks[pos]["description"] = description
+        my_tasks[pos]["updatedAt"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        with open (".tasks.json", "w") as json_tasks:
+            json.dump(my_tasks, json_tasks, indent=4)
+
+        print(f"The task with id \"{id}\" was succesfully updated!")
+    else:
+        print(f"The task with id \"{id}\" does not exist!")
 
 if __name__ == "__main__":
     add_task("Buy groceries")
@@ -86,3 +126,5 @@ if __name__ == "__main__":
 
     add_task("Clean up my room")
     add_task("This one does not exist")
+
+    update_task(6, "do my homework!")
