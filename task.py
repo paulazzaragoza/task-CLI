@@ -96,9 +96,9 @@ def add_task(description):
         with open (".tasks.json", "w") as json_tasks:
             json.dump(my_tasks, json_tasks, indent=4)
 
-        print(f"The task \"{description}\" was succesfully added! (ID:{id-1})")
+        print(f"\tThe task \"{description}\" was succesfully added! (ID:{id-1})")
     else:
-        print(f"The task \"{description}\" already exists!")
+        print(f"\tThe task \"{description}\" already exists!")
 
 #update the description of a task by its id number
 def update_task(id, description):
@@ -114,9 +114,9 @@ def update_task(id, description):
         with open (".tasks.json", "w") as json_tasks:
             json.dump(my_tasks, json_tasks, indent=4)
 
-        print(f"The task with id \"{id}\" was succesfully updated!")
+        print(f"\tThe task with id \"{id}\" was succesfully updated!")
     else:
-        print(f"The task with id \"{id}\" does not exist!")
+        print(f"\tThe task with id \"{id}\" does not exist!")
 
 #updates the rest of the ids already assigned
 def update_ids(lst, pos):
@@ -142,10 +142,11 @@ def delete_task(id):
         with open (".tasks.json", "w") as json_tasks:
             json.dump(my_tasks, json_tasks, indent=4)
 
-        print(f"The task with id \"{id}\" was succesfully removed!")
+        print(f"\tThe task with id \"{id}\" was succesfully removed!")
     else:
-        print(f"The task with id \"{id}\" does not exist!")
+        print(f"\tThe task with id \"{id}\" does not exist!")
 
+#marks a task in progress by its id
 def mark_in_progress_task(id):
     if(not checked_dict["file"]): check_file()
 
@@ -159,10 +160,11 @@ def mark_in_progress_task(id):
         with open (".tasks.json", "w") as json_tasks:
             json.dump(my_tasks, json_tasks, indent=4)
 
-        print(f"The task with id \"{id}\" was succesfully marked in progress!")
+        print(f"\tThe task with id \"{id}\" was succesfully marked in progress!")
     else:
-        print(f"The task with id \"{id}\" does not exist!")
+        print(f"\tThe task with id \"{id}\" does not exist!")
 
+#marks a task done by its id
 def mark_done_task(id):
     if(not checked_dict["file"]): check_file()
 
@@ -176,11 +178,41 @@ def mark_done_task(id):
         with open (".tasks.json", "w") as json_tasks:
             json.dump(my_tasks, json_tasks, indent=4)
 
-        print(f"The task with id \"{id}\" was succesfully marked done!")
+        print(f"\tThe task with id \"{id}\" was succesfully marked done!")
     else:
-        print(f"The task with id \"{id}\" does not exist!")
+        print(f"\tThe task with id \"{id}\" does not exist!")
 
+#lists all tasks
+def list_all_tasks():
+    if(not checked_dict["file"]): check_file()
 
+    my_tasks = get_tasks()
+
+    if(len(my_tasks) == 0):
+        print(f'\tThere are no tasks added yet.')
+
+    else:
+        for dct in my_tasks:
+            print(f'\tThe task "{dct['description']}" has id "{dct['id']}" and its status is "{dct['status']}".')
+
+#lists by status the tasks
+def list_by_status_tasks(status):
+    if(not checked_dict["file"]): check_file()
+
+    my_tasks = get_tasks()
+    exist_tasks = False
+
+    if(len(my_tasks) == 0):
+        print(f'\tThere are no tasks added yet.')
+    
+    else:
+        for dct in my_tasks:
+            if(dct['status'] == status):
+                if(not exist_tasks): exist_tasks = True
+                print(f'\tThe task "{dct['description']}" has id "{dct['id']}".')
+
+        if(not exist_tasks):
+            print(f'\tThere are no tasks marked as {status}.')
 
 if __name__ == "__main__":
     add_task("Buy groceries")
