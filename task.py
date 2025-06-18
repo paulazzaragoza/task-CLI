@@ -5,13 +5,8 @@ import json
 #saves the id counter for all tasks
 id = None
 
-#dict for the different status for a task
-status_dict = {"todo": 1, "in-progress": 2, "done": 3}
-
 #dict that saves if the file or the id has been checked before
 checked_dict = {"file": False, "id": False}
-
-
 
 
 #checks if the json file exists, if not it is created
