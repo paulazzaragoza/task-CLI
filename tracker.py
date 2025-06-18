@@ -1,12 +1,17 @@
-from task import add_task, update_task
+from task import add_task, update_task, delete_task
 import shlex
 
 #adds a task
 def add(description):
     add_task(description)
 
+#updates a task
 def update(id, description):
     update_task(id, description)
+
+#deletes a task
+def delete(id):
+    delete_task(id)
 
 #main program
 def program():
@@ -24,7 +29,16 @@ def program():
                     add(lst_command[1])
 
             elif(lst_command[0] == "update"):
-                update(int(lst_command[1]), lst_command[2])
+                if(len(lst_command) != 3):
+                    raise Exception('CommandError: use "help" to see de available commands.')
+                else:
+                    update(int(lst_command[1]), lst_command[2])
+
+            elif(lst_command[0] == "delete"):
+                if(len(lst_command) != 2):
+                    raise Exception('CommandError: use "help" to see de available commands.')
+                else:
+                    delete(int(lst_command[1]))
 
             elif(lst_command[0] == "help"):
                 if(len(lst_command) > 1):

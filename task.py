@@ -39,9 +39,8 @@ def get_coincidence(lst, id):
 
     pos = 0
     for dct in lst:
-        for key in dct.keys():
-            if(key == "id" and dct["id"] == id):
-                return pos
+        if(dct["id"] == id):
+            return pos
         
         pos += 1
 
@@ -64,9 +63,8 @@ def exists_task(lst, description_task):
     if(len(lst) == 0): return False
 
     for dct in lst:
-        for key in dct.keys():
-            if(key == "description" and dct["description"].lower() == description_task.lower()):
-                return True
+        if(dct["description"].lower() == description_task.lower()):
+            return True
             
     return False
 
@@ -120,6 +118,33 @@ def update_task(id, description):
     else:
         print(f"The task with id \"{id}\" does not exist!")
 
+#updates the rest of the ids already assigned
+def update_ids(lst, pos):
+    global id 
+    id -= 1
+
+    for i in range(pos, len(lst)):
+        lst[i]["id"] = lst[i]["id"] - 1
+
+#deletes a task by its id number
+def delete_task(id):
+    if(not checked_dict["file"]): check_file()
+    if(not checked_dict["id"]): get_last_id()
+
+    my_tasks = get_tasks()
+    pos = get_coincidence(my_tasks, id)
+
+    if(pos != -1): 
+        del my_tasks[pos]
+        update_ids(my_tasks, pos)
+
+        with open (".tasks.json", "w") as json_tasks:
+            json.dump(my_tasks, json_tasks, indent=4)
+
+        print(f"The task with id \"{id}\" was succesfully removed!")
+    else:
+        print(f"The task with id \"{id}\" does not exist!")
+
 if __name__ == "__main__":
     add_task("Buy groceries")
     add_task("help Marina")
@@ -127,4 +152,4 @@ if __name__ == "__main__":
     add_task("Clean up my room")
     add_task("This one does not exist")
 
-    update_task(6, "do my homework!")
+    delete_task(1)
