@@ -123,8 +123,9 @@ def update_ids(lst, pos):
     global id 
     id -= 1
 
-    for i in range(pos, len(lst)):
-        lst[i]["id"] = lst[i]["id"] - 1
+    if(len(lst) > 0):
+        for i in range(pos, len(lst)):
+            lst[i]["id"] = lst[i]["id"] - 1
 
 #deletes a task by its id number
 def delete_task(id):
@@ -144,6 +145,24 @@ def delete_task(id):
         print(f"The task with id \"{id}\" was succesfully removed!")
     else:
         print(f"The task with id \"{id}\" does not exist!")
+
+def mark_in_progress_task(id):
+    if(not checked_dict["file"]): check_file()
+
+    my_tasks = get_tasks()
+    pos = get_coincidence(my_tasks, id)
+
+    if(pos != -1): 
+        my_tasks[pos]["status"] = "in-progress"
+        my_tasks[pos]["updatedAt"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        with open (".tasks.json", "w") as json_tasks:
+            json.dump(my_tasks, json_tasks, indent=4)
+
+        print(f"The task with id \"{id}\" was succesfully marked in progress!")
+    else:
+        print(f"The task with id \"{id}\" does not exist!")
+
 
 if __name__ == "__main__":
     add_task("Buy groceries")

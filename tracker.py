@@ -1,4 +1,4 @@
-from task import add_task, update_task, delete_task
+from task import add_task, update_task, delete_task, mark_in_progress_task
 import shlex
 
 #adds a task
@@ -12,6 +12,10 @@ def update(id, description):
 #deletes a task
 def delete(id):
     delete_task(id)
+
+#marks a task in progress by its id
+def mark_in_progress(id):
+    mark_in_progress_task(id)
 
 #main program
 def program():
@@ -39,6 +43,12 @@ def program():
                     raise Exception('CommandError: use "help" to see de available commands.')
                 else:
                     delete(int(lst_command[1]))
+
+            elif(lst_command[0] == "mark-in-progress"):
+                if(len(lst_command) != 2):
+                    raise Exception('CommandError: use "help" to see de available commands.')
+                else:
+                    mark_in_progress(int(lst_command[1]))
 
             elif(lst_command[0] == "help"):
                 if(len(lst_command) > 1):
