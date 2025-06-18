@@ -1,6 +1,5 @@
 from task import add_task
 import shlex
-import json
 
 #adds a task
 def add(description):

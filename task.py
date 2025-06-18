@@ -2,7 +2,7 @@ from pathlib import Path
 from datetime import datetime
 import json
 
-#saves de id counter for all tasks
+#saves the id counter for all tasks
 id = None
 
 #dict for the different status for a task
