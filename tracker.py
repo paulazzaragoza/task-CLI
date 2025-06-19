@@ -1,4 +1,4 @@
-from task import add_task, update_task, delete_task, mark_in_progress_task, mark_done_task, list_all_tasks, list_by_status_tasks
+from task import add_task, update_task, delete_task, mark_task, list_all_tasks, list_by_status_tasks
 import shlex
 
 #adds a task
@@ -15,11 +15,11 @@ def delete(id):
 
 #marks a task in progress by its id
 def mark_in_progress(id):
-    mark_in_progress_task(id)
+    mark_task(id, "in-progress")
 
 #marks a task done by its id
 def mark_done(id):
-    mark_done_task(id)
+    mark_task(id, "done")
 
 #lists all tasks
 def list_all():

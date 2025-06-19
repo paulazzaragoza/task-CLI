@@ -141,39 +141,21 @@ def delete_task(id):
     else:
         print(f"\tThe task with id \"{id}\" does not exist!")
 
-#marks a task in progress by its id
-def mark_in_progress_task(id):
+#marks a task by its id with the status passed
+def mark_task(id, status):
     if(not checked_dict["file"]): check_file()
 
     my_tasks = get_tasks()
     pos = get_coincidence(my_tasks, id)
 
     if(pos != -1): 
-        my_tasks[pos]["status"] = "in-progress"
+        my_tasks[pos]["status"] = status
         my_tasks[pos]["updatedAt"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         with open (".tasks.json", "w") as json_tasks:
             json.dump(my_tasks, json_tasks, indent=4)
 
-        print(f"\tThe task with id \"{id}\" was succesfully marked in progress!")
-    else:
-        print(f"\tThe task with id \"{id}\" does not exist!")
-
-#marks a task done by its id
-def mark_done_task(id):
-    if(not checked_dict["file"]): check_file()
-
-    my_tasks = get_tasks()
-    pos = get_coincidence(my_tasks, id)
-
-    if(pos != -1): 
-        my_tasks[pos]["status"] = "done"
-        my_tasks[pos]["updatedAt"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        with open (".tasks.json", "w") as json_tasks:
-            json.dump(my_tasks, json_tasks, indent=4)
-
-        print(f"\tThe task with id \"{id}\" was succesfully marked done!")
+        print(f"\tThe task with id \"{id}\" was succesfully marked {status}!")
     else:
         print(f"\tThe task with id \"{id}\" does not exist!")
 
